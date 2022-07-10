@@ -10,68 +10,11 @@ from controller import *
 # 2*x**3 - 5*x**2 - x + 3
 
 # b)
-# 5*x**3 - 2*x**2 - 8*x + 10
+# 5*x**3 - 2*x**2 - 8*x + 1
 
 
-def deflateEquation(f: Expression, roots: list):
-    for r in roots:
-        # f = Expression(div(f.expr, (x - r))[0])
-        func = div(f.expr, (x - r))[0]
-        f = Expression(func)
-    return f
-
-def refinement():
-    pass
-
-def prerefinement(f: Expression, i: list):
-    a, b = i
-    bissection_list = full_bissection(f, a, b, 1e-3)
-    if bissection_list == [] or bissection_list == None:
-        pass
-    print("O pré-refinamento com método da Bisseção foi realizado com sucesso")
-    return bissection_list
-
-def get_intervals(f: Expression):
-    try:
-        lagrange_intervals = []
-        descartes_intervals = []
-        np, nn = 0
-        intervals = []
-        lagrange_intervals = lagrange(f)
-
-        np, nn = f.get_descartes()
-        if nn != [0]:
-            descartes_intervals += [lagrange_intervals[0]]
-        if np != [0]:
-            descartes_intervals += [lagrange_intervals[1]]
-        intervals = [i for i in descartes_intervals if (i[0] < i[1])]
-    except:
-        return None
-    return intervals
-
-def filter_intervals(f: Expression, intervals: list):
-    interval = ([],)
-    intervals_list = []
-    try:
-        if intervals == []:
-            return None
-        for i in intervals:
-            interval = getValidInterval(f, i)
-            if interval == []:
-                interval = bissection(f, i, 1e-1)
-                if interval != []:
-                    interval = getValidInterval(f, interval)
-            if interval != []:
-                intervals_list += [interval]
-    except:
-        print("Algum engano ocorreu")
-
-    if intervals_list == []:
-        return None
-    return intervals_list
-
-def filter_function():
-    pass
+# Inicio de função precisa todas as variaveis do escopo
+# Definir tipos
 
 if __name__ == "__main__":
     # Variables
@@ -98,6 +41,7 @@ if __name__ == "__main__":
         intervals_list = get_intervals(f)
         if intervals_list == None:
             break
+
         intervals_list = filter_intervals(f, intervals_list)
         if intervals_list == None:
             break

@@ -16,7 +16,7 @@ def bissection(f, interval, tolerance):
     return lista
 
 
-def full_bissection(f, a, b, tolerance):
+def full_bissection(f: Expression, interval: list, tolerance: float):
     bis_list = []
     bis_list += [[a, b, (a + b) / 2, f.when((a + b) / 2), abs(a - b)]]
     while bis_list[-1][4] > tolerance:
@@ -30,7 +30,7 @@ def full_bissection(f, a, b, tolerance):
     return bis_list
 
 
-def print_bissection_table(bis_list):
+def print_bissection_table(bis_list: list):
     print(' ' + '-' * 59)
     print(f'|{"a":^11}|{"x̄":^12}|{"b":^11}|{"f(x̄)":^12}|{"|a - b|":^11}|')
     print('|-----------|-----------|-----------|-----------|-----------|')
