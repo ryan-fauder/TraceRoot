@@ -37,7 +37,7 @@ def refinement_newton(f: Expression, interval: list, newton_table: list):
 
 def refinement_bissection(f: Expression, interval: list, bissection_table: list, tolerance: float):
     try:
-        bissection_table = bissection(f, interval, tolerance)
+        bissection_table.extend(bissection(f, interval, tolerance))
         return get_last_root(bissection_table)
     except:
         return None
@@ -45,7 +45,7 @@ def refinement_bissection(f: Expression, interval: list, bissection_table: list,
 
 def prerefinement(f: Expression, interval: list, bissection_table: list, tolerance: float):
     try:
-        bissection_table = bissection(f, interval, tolerance)
+        bissection_table.extend(bissection(f, interval, tolerance))
         return get_last_interval(bissection_table)
     except:
         return None

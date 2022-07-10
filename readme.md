@@ -7,7 +7,7 @@ O projeto responsável pela busca de raízes de um polinômio.
 - [X] Organizar a main
 - [X] Padronizar entrada de intervalos
 - [X] Alterar nomes de funções e variaveis
-- [ ] Arrumar o deflate;
+- [x] Arrumar o deflate;
 - [ ] bissection_table;
 - [ ] filter_intervals;
 - [ ] Escrever a readme.md
