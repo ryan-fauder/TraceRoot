@@ -12,8 +12,6 @@ from Expression import *
 # b)
 # 5*x**3 - 2*x**2 - 8*x + 1
 
-# Inicio de função precisa todas as variaveis do escopo
-# Definir tipos
 
 if __name__ == "__main__":
     # Variables
@@ -36,7 +34,7 @@ if __name__ == "__main__":
         if not f.expr.is_polynomial():
             break
 
-        if not f.is_rho():
+        if not f.has_x():
             break
 
         intervals_list = get_intervals(f)
