@@ -1,10 +1,10 @@
-from Expression import *
 from bissection import *
 from lagrange import *
 from newton import *
 from sympy import solve, simplify
 from sympy.abc import x
 from controller import *
+from Expression import *
 
 # a)
 # 2*x**3 - 5*x**2 - x + 3
@@ -12,15 +12,14 @@ from controller import *
 # b)
 # 5*x**3 - 2*x**2 - 8*x + 1
 
-
 # Inicio de função precisa todas as variaveis do escopo
 # Definir tipos
 
 if __name__ == "__main__":
     # Variables
     roots = []
-    bissection_list = []
-    newton_list = []
+    bissection_table = []
+    newton_table = []
     f: Expression = Expression.input("Escreva a função: ")
 
     if not f.expr.is_polynomial():
@@ -33,8 +32,10 @@ if __name__ == "__main__":
 
     while True:
         intervals_list = []
+        
         if not f.expr.is_polynomial():
             break
+
         if not f.is_rho():
             break
 
@@ -45,28 +46,25 @@ if __name__ == "__main__":
         intervals_list = filter_intervals(f, intervals_list)
         if intervals_list == None:
             break
+
         new_roots = []
+        root: float = 0.0
 
         for i in intervals_list:
-            bissection_list = prerefinement(f, i)
-            newton_interval = [bissection_list[-1][0], bissection_list[-1][1]]
-            try:
-                x_0 = choose_x0(f, newton_interval, 1e-4)
-                newton_list += nr_method__(f, x_0, 10**-7)
-                new_roots += [newton_list[-1][1]]
+            interval_refined = []
 
-                print("O refinamento com método de Newton foi realizado com sucesso")
-            except:
-                print(
-                    "Os requisitos para o refinamento com o método Newton não foram atendidos."
-                )
-                newton_list = []
-                bissection_list += full_bissection(
-                    f, newton_interval[0], newton_interval[1], 10**-7
-                )
-                new_roots += [bissection_list[-1][2]]
-                print("O refinamento com método da Bisseção foi realizado com sucesso")
-            print_table_roots(bissection_list, newton_list)
+            interval_refined = prerefinement(f, i, bissection_table, 10**-3)
+            print("O pré-refinamento com método da Bisseção foi realizado com sucesso.")
+
+            root = refinement_newton(f, interval_refined, newton_table)
+            if root != None:
+                print("O refinamento com método de Newton foi realizado com sucesso.")
+            else:
+                print("Os requisitos para o refinamento com o método Newton não foram atendidos.")
+                root = refinement_bissection(f, interval_refined, bissection_table, 10**-7)
+                print("O refinamento com método da Bisseção foi realizado com sucesso.")                
+            print_table_roots(bissection_table, newton_table)
+            new_roots += [root]
+        f = deflate_equation(f, new_roots)
         roots += new_roots
-        f = deflateEquation(f, new_roots)
     print("\nRaízes: ", roots)

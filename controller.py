@@ -1,20 +1,12 @@
 from bissection import *
 from lagrange import *
 from newton import *
-from sympy import solve, simplify
+from sympy import div
 from sympy.abc import x
 from Expression import *
+from utils import *
 
-def print_table_roots(bissection_list, newton_list):
-    if bissection_list != []:
-        print("\nBisseção: ")
-        print_bissection_table(bissection_list)
-    if newton_list != []:
-        print("Newton: ")
-        nr_method_print(newton_list)
-
-
-def deflateEquation(f: Expression, roots: list):
+def deflate_equation(f: Expression, roots: list):
     for r in roots:
         # f = Expression(div(f.expr, (x - r))[0])
         func = div(f.expr, (x - r))[0]
@@ -22,17 +14,41 @@ def deflateEquation(f: Expression, roots: list):
     return f
 
 
-def refinement():
-    pass
+def print_table_roots(bissection_table, newton_table):
+    if bissection_table != []:
+        print("\nBisseção: ")
+        bissection_print(bissection_table)
+    if newton_table != []:
+        print("Newton: ")
+        newton_print(newton_table)
 
 
-def prerefinement(f: Expression, i: list):
-    a, b = i
-    bissection_list = full_bissection(f, a, b, 1e-3)
-    if bissection_list == [] or bissection_list == None:
-        pass
-    print("O pré-refinamento com método da Bisseção foi realizado com sucesso")
-    return bissection_list
+def refinement_newton(f: Expression, interval: list, newton_table: list):
+    root = 0.0
+    x_0 = 0
+    try:
+        x_0 = choose_x0(f, interval, 10**-4)
+        newton_table.extend(newton(f, x_0, 10**-7))
+        root = newton_table[-1][1]
+        return root
+    except:
+        return None
+
+
+def refinement_bissection(f: Expression, interval: list, bissection_table: list, tolerance: float):
+    try:
+        bissection_table = bissection(f, interval, tolerance)
+        return get_last_root(bissection_table)
+    except:
+        return None
+           
+
+def prerefinement(f: Expression, interval: list, bissection_table: list, tolerance: float):
+    try:
+        bissection_table = bissection(f, interval, tolerance)
+        return get_last_interval(bissection_table)
+    except:
+        return None
 
 
 def get_intervals(f: Expression):
@@ -41,6 +57,7 @@ def get_intervals(f: Expression):
         descartes_intervals = []
         np, nn = 0, 0
         intervals = []
+
         lagrange_intervals = lagrange(f)
 
         np, nn = f.get_descartes()
@@ -61,20 +78,15 @@ def filter_intervals(f: Expression, intervals: list):
         if intervals == []:
             return None
         for i in intervals:
-            interval = getValidInterval(f, i)
+            interval = bolzano(f, i)
             if interval == []:
-                interval = bissection(f, i, 1e-1)
+                interval = search_valid_interval(f, i, 1e-1)
                 if interval != []:
-                    interval = getValidInterval(f, interval)
+                    interval = bolzano(f, interval)
             if interval != []:
                 intervals_list += [interval]
     except:
-        print("Algum engano ocorreu")
-
+        return None
     if intervals_list == []:
         return None
     return intervals_list
-
-
-def filter_function():
-    pass

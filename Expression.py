@@ -82,5 +82,3 @@ class Expression:
     def has_roots(self):
         np, nn = self.get_descartes()
         return (np != [0] or nn != [0])
-        
-        
