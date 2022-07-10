@@ -23,7 +23,7 @@ Em seu terminal, faça um clone do repositório:
 Em seguida, execute o seguinte comando para entrar no diretório criado e iniciar o programa:
 
 ```bash
-  cd traceroot
+  cd TraceRoot
   python main.py
 ```
 
@@ -68,3 +68,4 @@ O método aplicado pelo programa para a procura de todas as raízes foi definido
 - [X] has_degree;
 - [X] Escrever a readme.md
 - [X] Organizar a controller
+- [ ] Raizes Multiplas
