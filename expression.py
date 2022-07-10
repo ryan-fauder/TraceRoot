@@ -5,10 +5,11 @@ import numpy as np
 
 class Expression:
     expr = None
-
+    coeffs_list = []
     def __init__(self, f):
         self.expr = f
-        
+        self.coeffs_list = []
+    
     @classmethod
     def input(cls, q):
         return cls(input_expr(q))
@@ -33,35 +34,45 @@ class Expression:
     def get_coeffs(self, n = 0):
         if (not self.expr.is_polynomial()): raise Exception('Expressão deve ser um polinômio')
         if (n < 0 or n > 3): raise Exception('n deve ser estar no intervalo [0, 3]')
+        coeffs = []
+        
         # Função para inverter coeficientes de grau ímpar
         invert_odd_degree_coeffs = lambda l: list(map(lambda x: x[1] if x[0] % 2 == 0 else -x[1], enumerate(l)))
         
         # Coeficientes do polinômio
-        coeffs_list = list(Poly(self.expr).all_coeffs())
+        if(self.coeffs_list == []):
+            self.coeffs_list = list(Poly(self.expr).all_coeffs())
 
+        coeffs = self.coeffs_list
         if n == 1:
-          coeffs_list = coeffs_list[::-1]
+          coeffs = self.coeffs_list[::-1]
         elif n == 2:
-          coeffs_list = invert_odd_degree_coeffs(coeffs_list)
+          coeffs = invert_odd_degree_coeffs(self.coeffs_list)
         elif n == 3:
-          coeffs_list = invert_odd_degree_coeffs(coeffs_list[::-1])
+          coeffs = invert_odd_degree_coeffs(self.coeffs_list[::-1])
 
-        return coeffs_list if coeffs_list[0] > 0 else list(map(lambda x: -x, coeffs_list))
+        return coeffs if coeffs[0] > 0 else list(map(lambda x: -x, coeffs))
     
 
     def get_lowest_degree(self):
-        if (not self.expr.is_polynomial()): raise Exception('Expressão deve ser um polinômio')
-
         coeffs_list = self.get_coeffs()
         return len(coeffs_list) - len(np.trim_zeros(coeffs_list))
 
 
-    def get_highest_degree(self):
-        if (not self.expr.is_polynomial()): raise Exception('Expressão deve ser um polinômio')
-
+    def get_highest_degree(self) -> int:
         return len(self.get_coeffs())
+    
 
+    def has_degree(self, degree: float) -> bool:
+        return (len(self.get_coeffs()) - 1 == degree)
 
+    def get_coeff(self, degree: float) -> float:
+        coeffs = self.get_coeffs()
+        
+        if(len(coeffs) > degree):
+            return coeffs[(len(coeffs) - 1) - degree]
+        
+        return None
     def has_x(self):
         return symbols('x') in self.expr.free_symbols
     

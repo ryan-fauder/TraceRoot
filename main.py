@@ -6,16 +6,10 @@ from sympy.abc import x
 from controller import *
 from expression import Expression
 
-# a)
-# 2*x**3 - 5*x**2 - x + 3
-
-# b)
-# 5*x**3 - 2*x**2 - 8*x + 1
-
-
 if __name__ == "__main__":
     # Variables
     roots = []
+    root = 0
     bissection_table = []
     newton_table = []
 
@@ -31,25 +25,29 @@ if __name__ == "__main__":
     
     while True:
         intervals_list = []
-        
+        new_roots = []
+        root: float = 0.0
+
         if not f.expr.is_polynomial():
             break
         if not f.has_x():
             break
-        # if f.has_degree():
-        #    break
+        if f.has_degree(1):       
+            c0 = f.get_coeff(0)
+            c1 = f.get_coeff(1)
+            root = (-1) * c0 / c1
+            roots += [root]
+            break
+        
         intervals_list = get_intervals(f)
-
-        if intervals_list == None:
+        
+        if intervals_list == None or intervals_list == []:
             break
 
         intervals_list = filter_intervals(f, intervals_list)
 
-        if intervals_list == None:
+        if intervals_list == None or intervals_list == []:
             break
-
-        new_roots = []
-        root: float = 0.0
 
         for i in intervals_list:
             interval_refined = []

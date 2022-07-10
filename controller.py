@@ -6,9 +6,9 @@ from sympy.abc import x
 from expression import *
 from utils import *
 
+
 def deflate_equation(f: Expression, roots: list):
     for r in roots:
-        # f = Expression(div(f.expr, (x - r))[0])
         func = div(f.expr, (x - r))[0]
         f = Expression(func)
     return f
@@ -72,21 +72,16 @@ def get_intervals(f: Expression):
 
 
 def filter_intervals(f: Expression, intervals: list):
-    interval = ([],)
-    intervals_list = []
-    try:
-        if intervals == []:
-            return None
-        for i in intervals:
-            interval = f.bolzano(i)
-            if interval == []:
-                interval = search_valid_interval(f, i, 1e-1)
-                if interval != []:
-                    interval = f.bolzano(interval)
-            if interval != []:
-                intervals_list += [interval]
-    except:
-        return None
-    if intervals_list == []:
-        return None
-    return intervals_list
+    interval_temp = []
+    intervals_filtered = []
+
+    for i in intervals:
+        interval_temp = f.bolzano(i)
+        if interval_temp == []:
+            interval_temp = search_valid_interval(f, i, 1e-1)
+            if interval_temp != []:
+                 interval_temp = f.bolzano(interval_temp)
+        if interval_temp != []:
+            intervals_filtered += [interval_temp]
+            
+    return intervals_filtered if intervals_filtered != [] else None
