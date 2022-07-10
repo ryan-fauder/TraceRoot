@@ -17,7 +17,7 @@
 Em seu terminal, faça um clone do repositório:
 
 ```bash
-  git clone [LINK]
+  git clone https://github.com/ryan-fauder/TraceRoot
 ```
 
 Em seguida, execute o seguinte comando para entrar no diretório criado e iniciar o programa:
