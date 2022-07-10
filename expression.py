@@ -86,3 +86,16 @@ class Expression:
     def has_real_roots(self):
         np, nn = self.get_descartes()
         return (np != [0] or nn != [0])
+    
+    def bolzano(self, interval: list):
+        a = interval[0]
+        b = interval[1]
+        f_a = self.when(a)
+        f_b = self.when(b)
+        # [positive, negative]
+        if f_a >= 0 and f_b <= 0:
+            return [a, b]
+        elif f_a <= 0 and f_b >= 0:
+            return [b, a]
+        else:
+            return []

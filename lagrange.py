@@ -1,4 +1,4 @@
-from Expression import Expression
+from expression import Expression
 
 """
 1/L_1 <= positive_roots <= L
@@ -7,11 +7,11 @@ from Expression import Expression
 L_i = 1 + (B / c_n)^(1 / (n - k))
 """
 
-def lagrange(expr):
+def lagrange(f: Expression):
 	limits = []
-	n = len(expr.get_coeffs()) - 1
+	n = len(f.get_coeffs()) - 1
 	for i in range(0, 3+1):
-		polys = expr.get_coeffs(i)
+		polys = f.get_coeffs(i)
 		k = 0
 		for j in range(0, n+1):
 			if polys[j] < 0: 

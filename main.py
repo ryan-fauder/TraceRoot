@@ -4,7 +4,7 @@ from newton import *
 from sympy import solve, simplify
 from sympy.abc import x
 from controller import *
-from Expression import *
+from expression import Expression
 
 # a)
 # 2*x**3 - 5*x**2 - x + 3

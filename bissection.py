@@ -1,4 +1,4 @@
-from Expression import Expression
+from expression import Expression
 
 # Bissection Method
 

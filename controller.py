@@ -3,7 +3,7 @@ from lagrange import *
 from newton import *
 from sympy import div
 from sympy.abc import x
-from Expression import *
+from expression import *
 from utils import *
 
 def deflate_equation(f: Expression, roots: list):
@@ -78,11 +78,11 @@ def filter_intervals(f: Expression, intervals: list):
         if intervals == []:
             return None
         for i in intervals:
-            interval = bolzano(f, i)
+            interval = f.bolzano(i)
             if interval == []:
                 interval = search_valid_interval(f, i, 1e-1)
                 if interval != []:
-                    interval = bolzano(f, interval)
+                    interval = f.bolzano(interval)
             if interval != []:
                 intervals_list += [interval]
     except:
